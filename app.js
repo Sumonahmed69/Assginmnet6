@@ -33,31 +33,22 @@ const showImages = (images) => {
 }
 
 const getImages = (query) => {
-  toggleSpinner();
+  toggleSpinner(true);
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
     .then(data => showImages(data.hits))
     .catch(err => console.log(err))
-
 }
-
-
-
 let slideIndex = 0;
 const selectItem = (event, img) => {
   let element = event.target;
-  element.classList.add('added');
-
+  element.classList.toggle('added');
   let item = sliders.indexOf(img);
   if (item === -1) {
-    sliders.push(img);
-
-    
-
-  } else {
-    // alert('Hey, Already added !')
+    sliders.push(img);  
+    return item;
+  } else {    
     sliders.splice(item, 1);
-
   }
 }
 
@@ -82,7 +73,7 @@ const createSlider = () => {
   // hide image aria
   imagesArea.style.display = 'none';
   const duration = document.getElementById('doration').value || 1000;
-  toggleSpinner();
+  
   sliders.forEach(slide => {
     if (duration > 0) {
       let item = document.createElement('div')
@@ -101,7 +92,7 @@ const createSlider = () => {
     slideIndex++;
     changeSlide(slideIndex);
   }, duration);
-  
+  toggleSpinner(false);
 
 }
 
@@ -143,18 +134,14 @@ sliderBtn.addEventListener('click', function () {
   createSlider()
 })
 
-//loading spinner
-// const toggleSpinner = (show) => {
-//   const spinner = document.getElementById('spinner');
-//   if (show) {
-//     spinner.classList.remove('d-none');
-//   }
-//   else {
-//     spinner.classList.add('d-none');
-//   }
-// }
-
-const toggleSpinner = () => {
-  const spinner = document.getElementById("spinner");
-  spinner.classList.toggle('d-none');
+// loading spinner
+const toggleSpinner = (show) => {
+  const spinner = document.getElementById('spinner');
+  if (show) {
+    spinner.classList.remove('d-none');
+  }
+  else {
+    spinner.classList.add('d-none');
+  }
 }
+
